@@ -1,5 +1,5 @@
 """
-Be sure to replace MYSITE with the name of your site.
+Be sure to replace YOURSITEHERE with the name of your site.
 """
 
 import os
@@ -21,10 +21,6 @@ INSTALLED_APPS = (
     'django.contrib.staticfiles',
     # Project Apps
     # Third Party Apps
-
-    # Dev
-    'django_extensions',
-    'django_nose',
 )
 
 MIDDLEWARE_CLASSES = (
@@ -37,9 +33,9 @@ MIDDLEWARE_CLASSES = (
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 )
 
-ROOT_URLCONF = 'MYSITE.urls'
+ROOT_URLCONF = 'YOURSITEHERE.urls'
 
-WSGI_APPLICATION = 'MYSITE.wsgi.application'
+WSGI_APPLICATION = 'YOURSITEHERE.wsgi.application'
 
 
 ############
@@ -132,7 +128,7 @@ TEST_RUNNER = 'django_nose.NoseTestSuiteRunner'
 
 DEBUG_APPS = None
 try:
-    from MYSITE.local_settings import *
+    from YOURSITEHERE.local_settings import *
 except ImportError:
     pass
 else:
