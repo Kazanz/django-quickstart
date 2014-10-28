@@ -1,33 +1,16 @@
 """
-Django settings for catan project.
-
-For more information on this file, see
-https://docs.djangoproject.com/en/1.7/topics/settings/
-
-For the full list of settings and their values, see
-https://docs.djangoproject.com/en/1.7/ref/settings/
+Be sure to replace MYSITE with the name of your site.
 """
 
-# Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 import os
 BASE_DIR = os.path.dirname(os.path.dirname(__file__))
 
 
-# Quick-start development settings - unsuitable for production
-# See https://docs.djangoproject.com/en/1.7/howto/deployment/checklist/
+DEBUG = False
 
-# SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = '_3+o19-t+-5fy6_n__z-&3fo8d$7&_++ieg9mka6r3)plks#-t'
-
-# SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
-
-TEMPLATE_DEBUG = True
+TEMPLATE_DEBUG = False
 
 ALLOWED_HOSTS = []
-
-
-# Application definition
 
 INSTALLED_APPS = (
     'django.contrib.admin',
@@ -36,6 +19,12 @@ INSTALLED_APPS = (
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    # Project Apps
+    # Third Party Apps
+
+    # Dev
+    'django_extensions',
+    'django_nose',
 )
 
 MIDDLEWARE_CLASSES = (
@@ -48,13 +37,15 @@ MIDDLEWARE_CLASSES = (
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 )
 
-ROOT_URLCONF = 'catan.urls'
+ROOT_URLCONF = 'MYSITE.urls'
 
-WSGI_APPLICATION = 'catan.wsgi.application'
+WSGI_APPLICATION = 'MYSITE.wsgi.application'
 
 
-# Database
-# https://docs.djangoproject.com/en/1.7/ref/settings/#databases
+############
+# DATABASE #
+############
+
 
 DATABASES = {
     'default': {
@@ -63,8 +54,24 @@ DATABASES = {
     }
 }
 
-# Internationalization
-# https://docs.djangoproject.com/en/1.7/topics/i18n/
+
+#############
+# TEMPLATES #
+#############
+
+
+TEMPLATE_DIRS = (os.path.join(BASE_DIR, 'templates'),)
+
+TEMPLATE_CONTEXT_PROCESSORS = (
+    'django.contrib.auth.context_processors.auth',
+    'django.core.context_processors.debug',
+    'django.core.context_processors.i18n',
+    'django.core.context_processors.request',
+    'django.core.context_processors.media',
+    'django.core.context_processors.static',
+    'django.contrib.messages.context_processors.messages',
+)
+
 
 LANGUAGE_CODE = 'en-us'
 
@@ -77,7 +84,56 @@ USE_L10N = True
 USE_TZ = True
 
 
-# Static files (CSS, JavaScript, Images)
-# https://docs.djangoproject.com/en/1.7/howto/static-files/
+##########
+# STATIC #
+##########
 
+# url prefix for user uploaded files, stuff that django has to serve directly
+MEDIA_URL = '/media/'
+# url prefix for static files like css, js, images
 STATIC_URL = '/static/'
+# url prefix for *static* /admin media
+ADMIN_MEDIA_PREFIX = STATIC_URL + 'admin/'
+# path to django-served media
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+# path used for collectstatic, *where the webserver not django will expect to find files*
+STATIC_ROOT = os.path.join(BASE_DIR, 'public/')
+# path to directories containing static files for django project, apps, etc, css/js
+STATICFILES_DIRS = (
+    os.path.join(BASE_DIR, 'static'),
+)
+# List of finder classes that know how to find static files in various locations.
+STATICFILES_FINDERS = (
+    'django.contrib.staticfiles.finders.FileSystemFinder',
+    'django.contrib.staticfiles.finders.AppDirectoriesFinder',
+)
+
+############
+# MESSAGES #
+############
+
+MESSAGE_STORAGE = 'django.contrib.messages.storage.cookie.CookieStorage'
+
+
+import warnings
+import exceptions
+warnings.filterwarnings("ignore", category=exceptions.RuntimeWarning, module='django.db.backends.sqlite3.base', lineno=53)
+
+
+###########
+# TESTING #
+###########
+
+TEST_RUNNER = 'django_nose.NoseTestSuiteRunner'
+
+#########################
+# LOCAL SETTINGS LOADER #
+#########################
+
+DEBUG_APPS = None
+try:
+    from MYSITE.local_settings import *
+except ImportError:
+    pass
+else:
+    INSTALLED_APPS += DEBUG_APPS
